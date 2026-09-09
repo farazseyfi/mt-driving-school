@@ -818,8 +818,8 @@
           <div class="form-row">
             <div class="field">
               <label for="bk-date">Preferred date</label>
-              <input type="date" id="bk-date" name="date" required>
-              <span class="field-error" role="alert">Please choose a preferred date.</span>
+              <input type="date" id="bk-date" name="date" required aria-describedby="bk-date-error">
+              <span class="field-error" id="bk-date-error" role="alert">Please choose a preferred date.</span>
             </div>
             <div class="field">
               <label for="bk-time">Preferred time</label>
@@ -1278,11 +1278,24 @@
     field.closest('.field').classList.toggle('has-error', hasError);
   }
 
+  // Local (not UTC) today, as YYYY-MM-DD — matches the <input type="date">
+  // value format, so it can be compared/assigned as a plain string without
+  // any timezone-conversion risk of shifting to the previous/next day.
+  function todayLocalISO(){
+    var d = new Date();
+    var y = d.getFullYear();
+    var m = String(d.getMonth() + 1).padStart(2, '0');
+    var day = String(d.getDate()).padStart(2, '0');
+    return y + '-' + m + '-' + day;
+  }
+
   if(bookingForm){
+    bookingForm.date.min = todayLocalISO();
+
     bookingForm.addEventListener('submit', function(e){
       e.preventDefault();
       var requiredFields = [
-        bookingForm.package, bookingForm.date, bookingForm.time, bookingForm.area, bookingForm.level
+        bookingForm.package, bookingForm.time, bookingForm.area, bookingForm.level
       ];
       var firstInvalid = null;
       requiredFields.forEach(function(field){
@@ -1290,6 +1303,20 @@
         setFieldError(field, invalid);
         if(invalid && !firstInvalid){ firstInvalid = field; }
       });
+
+      // Preferred date: validated again here rather than relying solely on
+      // the HTML `min` attribute. Comparing YYYY-MM-DD strings avoids any
+      // UTC/local timezone parsing pitfalls.
+      var dateErrorEl = document.getElementById('bk-date-error');
+      var dateValue = bookingForm.date.value;
+      var dateEmpty = !dateValue;
+      var datePast = !dateEmpty && dateValue < todayLocalISO();
+      var dateInvalid = dateEmpty || datePast;
+      setFieldError(bookingForm.date, dateInvalid);
+      bookingForm.date.setAttribute('aria-invalid', dateInvalid ? 'true' : 'false');
+      dateErrorEl.textContent = datePast ? 'Please choose a date that is today or later.' : 'Please choose a preferred date.';
+      if(dateInvalid && !firstInvalid){ firstInvalid = bookingForm.date; }
+
       if(firstInvalid){
         firstInvalid.focus();
         return;
