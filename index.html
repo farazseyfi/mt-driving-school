@@ -165,8 +165,8 @@
   .proof-list li{display:flex;align-items:center;}
   .proof-list li:not(:last-child)::after{content:"";display:inline-block;width:1px;height:12px;background:var(--line);margin:0 16px;}
   .proof-list b{color:var(--text);font-family:'IBM Plex Mono',monospace;font-weight:600;letter-spacing:0;margin-right:6px;}
-  .hero-visual{position:relative;aspect-ratio:1/1;max-width:380px;margin:0 auto;}
-  .hero-visual svg{width:100%;height:100%;}
+  .hero-visual{margin:0 auto;max-width:420px;}
+  .hero-photo{display:block;width:100%;height:auto;border-radius:12px;border:1px solid var(--line);box-shadow:0 16px 32px -12px color-mix(in srgb, var(--deep) 30%, transparent);background:var(--surface);}
 
   .quote-block{max-width:760px;margin:0 auto;text-align:center;}
   .quote-block blockquote{font-family:'Fraunces',serif;font-style:italic;font-weight:400;font-size:clamp(1.5rem,3vw,2.1rem);line-height:1.35;color:var(--text);margin:0 0 28px;}
@@ -304,7 +304,7 @@
     header.site.nav-open nav.primary a{padding:14px 8px;font-size:0.95rem;border-top:1px solid var(--line);}
     header.site.nav-open nav.primary a:first-child{border-top:none;}
     .hero .wrap{grid-template-columns:1fr;gap:40px;}
-    .hero-visual{order:-1;max-width:240px;}
+    .hero-visual{order:-1;max-width:340px;}
     .pillars{grid-template-columns:1fr;gap:32px;}
     .price-row{grid-template-columns:1fr;gap:8px;padding:24px 0;}
     .price-amount{font-size:1.3rem;}
@@ -421,25 +421,8 @@
           <li><b>1:1</b>Instruction only</li>
         </ul>
       </div>
-      <div class="hero-visual" aria-hidden="true">
-        <svg viewBox="0 0 320 320">
-          <circle cx="160" cy="160" r="150" fill="none" stroke="var(--line)" stroke-width="1"/>
-          <g stroke="var(--text)" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.55">
-            <path d="M70 250 L125 75" />
-            <path d="M250 250 L195 75" />
-          </g>
-          <g stroke="var(--line)" stroke-width="1" stroke-dasharray="10 10" fill="none">
-            <path d="M160 70 L160 250"/>
-          </g>
-          <g stroke="var(--accent)" stroke-width="2" stroke-linecap="round">
-            <path d="M160 232 L160 202"/>
-          </g>
-          <circle cx="160" cy="160" r="42" fill="var(--bg)" stroke="var(--text)" stroke-width="1.2"/>
-          <circle cx="160" cy="160" r="4" fill="var(--accent)" stroke="none"/>
-          <g stroke="var(--text)" stroke-width="1.2" stroke-linecap="round" opacity="0.7">
-            <path d="M160 126v16M160 178v16M126 160h16M178 160h16"/>
-          </g>
-        </svg>
+      <div class="hero-visual">
+        <img class="hero-photo" src="assets/mt-driving-school-vehicle.png" width="468" height="280" alt="MT Driving School training vehicle in Burnaby">
       </div>
     </div>
   </div>
