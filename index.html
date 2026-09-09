@@ -392,7 +392,7 @@
         <svg class="icon"><use href="#i-phone"/></svg>(604) 818-1755
       </a>
       <a class="btn btn-primary btn-sm" href="#/lessons" data-route="/lessons">Book a Lesson</a>
-      <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+      <button type="button" class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
         <svg class="icon"><use href="#i-arrow"/></svg>
       </button>
     </div>
@@ -1129,6 +1129,18 @@
   var pages = document.querySelectorAll('.page');
   var navLinks = document.querySelectorAll('[data-route]');
 
+  function openMenu(){
+    header.classList.add('nav-open');
+    toggle.setAttribute('aria-expanded','true');
+    toggle.setAttribute('aria-label','Close menu');
+  }
+
+  function closeMenu(){
+    header.classList.remove('nav-open');
+    toggle.setAttribute('aria-expanded','false');
+    toggle.setAttribute('aria-label','Open menu');
+  }
+
   function currentPath(){
     var h = window.location.hash.replace('#','');
     var path = h.split('?')[0] || '/';
@@ -1163,8 +1175,7 @@
         }
       }
     });
-    header.classList.remove('nav-open');
-    toggle.setAttribute('aria-expanded','false');
+    closeMenu();
     window.scrollTo(0,0);
     if(route === '/booking' && typeof enterBookingRoute === 'function'){ enterBookingRoute(); }
   }
@@ -1173,8 +1184,14 @@
   if(!window.location.hash){ window.location.hash = '#/'; }
 
   toggle.addEventListener('click', function(){
-    var open = header.classList.toggle('nav-open');
-    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if(header.classList.contains('nav-open')){ closeMenu(); } else { openMenu(); }
+  });
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && header.classList.contains('nav-open')){
+      closeMenu();
+      toggle.focus();
+    }
   });
 
   document.getElementById('year').textContent = new Date().getFullYear();
